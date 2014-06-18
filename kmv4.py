@@ -2,8 +2,8 @@
 import commons
 import math
 
-def get_fund1(sigmaP, sigmaVi, nd1, d1):
-    temp = math.log((sigmaP * commons.EQUITY) / (nd1 * sigmaVi * commons.D))
+def get_fd1(sigmaP, sigmaVi, nd1, d1, nd2):
+    temp = math.log((commons.EQUITY + (commons.D * math.pow(math.e, -commons.R * commons.T) * nd2) / (nd1 * commons.D)))
     numerator = temp + (commons.R + 0.5 * sigmaVi * sigmaVi) * commons.T
     denominator = sigmaVi * math.sqrt(commons.T)
     fund1i = (d1 - numerator / denominator)
@@ -12,9 +12,9 @@ def get_fund1(sigmaP, sigmaVi, nd1, d1):
     # print fund1i
     return fund1i
 
-def get_v(sigmaP, nd1, sigmaV):
-    numerator = sigmaP * commons.EQUITY
-    denominator = nd1 * sigmaV
+def get_v2(sigmaV, nd1, nd2):
+    numerator = commons.D * math.pow(math.e, -commons.R * commons.T) * nd2 + commons.EQUITY
+    denominator = nd1
     return numerator / denominator
 
 def main():
@@ -37,14 +37,14 @@ def main():
             continue
         d1i = sigmaVi * commons.T + d2i
         nd1i = commons.get_nd1(d1i, "x-nx")
-        fund1i = get_fund1(sigmaP, sigmaVi, nd1i, d1i)
+        fund1i = get_fd1(sigmaP, sigmaVi, nd1i, d1i, nd2i)
         if fund1 > fund1i :
             fund1 = fund1i
             sigmaV = sigmaVi
             nd1 = nd1i
         # print "The fund1i is %10.12f, and the sigmaVi is %10.12f" % (fund1i, sigmaVi)
     print "The fd1 is %10.12f, and the sigmaV is %10.12f" % (fund1, sigmaV)
-    v = get_v(sigmaP, nd1, sigmaV)
+    v = get_v2(sigmaP, nd1, sigmaV)
     print "V is %.10f" % v
     dd = (v - commons.D) / (v * sigmaV)
     print "DD is %.10f" % dd
