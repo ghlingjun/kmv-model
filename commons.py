@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import math
+import math, sys, getopt
 
 global N
 global EQUITY
@@ -80,6 +80,23 @@ def get_nd1(d1, filename):
         return 1 - find_word(filename, '%.4f' % (-d1))
     else :
         return 0.5
+
+def usage():
+    print "python kmv3.py -i stock-price.data"
+
+def get_input_file():
+    opts, args = getopt.getopt(sys.argv[1:], "hi:o:")
+    input_file=""
+    output_file=""
+    for op, value in opts:
+        if op == "-i":
+            input_file = value
+        elif op == "-o":
+            output_file = value
+        elif op == "-h":
+            usage()
+            sys.exit()
+    return input_file
 
 if __name__=="__main__":
     main()
