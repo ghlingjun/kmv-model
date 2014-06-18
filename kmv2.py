@@ -7,7 +7,7 @@ def get_listE(filename):
     file = open(filename) # 返回一个文件对象
     listE = []
     while 1:
-        lines = file.readlines(100000) # 调用文件的 readline()方法
+        lines = file.readlines(300) # 调用文件的 readline()方法
         if not lines:
             break;
         for line in lines:
@@ -54,7 +54,8 @@ def find_word(filename, word):
     with open(filename, 'r') as f:
         for l in f.readlines():
               if word in l:
-                  return float(l.split()[1])
+                    if word == l.split()[0] :
+                        return float(l.split()[1])
 
 def get_listd2(listNd2, filename):
     listd2 = []
@@ -142,13 +143,14 @@ def get_listWi(listW, sigmaE, sigmaV):
     return listWi
 
 def main():
-    listE = get_listE("stock-value")
+    # read equity from file "equity"
+    listE = get_listE("equity")
+    # print listE
     global N
     N = len(listE)
     # print N
-    # print listE
     sigmaE = get_sigmaE(listE)
-    print "sigma E is: %10.12f" % sigmaE
+    print "The volatility of the value of equity:  sigmaE = %10.12f" % sigmaE
     listW = get_listW(listE, sigmaE)
     sigmaV1 = get_sigmaE(listW)
     print "sigma V1 is: %10.12f" % sigmaV1
