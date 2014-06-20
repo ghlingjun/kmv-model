@@ -82,7 +82,7 @@ def get_nd1(d1, filename):
         return 0.5
 
 def usage():
-    print "python kmv3.py -i stock-price.data"
+    print "python kmv3.py -i data/stock-price.data"
 
 def get_input_file():
     opts, args = getopt.getopt(sys.argv[1:], "hi:o:")

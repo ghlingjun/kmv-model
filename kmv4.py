@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import commons
-import math
+import math, time
 
 def get_fd1(sigmaP, sigmaVi, nd1, d1, nd2):
     temp = math.log((commons.EQUITY + (commons.D * math.pow(math.e, -commons.R * commons.T) * nd2) / (nd1 * commons.D)))
@@ -19,10 +19,11 @@ def get_v2(sigmaV, nd1, nd2):
 
 def main():
     input_file = commons.get_input_file()
-    data_file = "stock-price.data"
-    out_file = "out.data"
+    data_file = "data/stock-price.data"
+    out_file = "data/out.data"
     outputfile = open(out_file, "w")
-    outputfile.write(time.localtime() + "method 1")
+    outputfile.write("KMV4 begin: " + time.strftime('%Y-%m-%d %H:%M:%S') + "\n")
+    outputfile.write("+++++++++++++++++++++++++++\n")
     if input_file != "" :
         inputfile = open(input_file, "r")
         while True :
@@ -63,11 +64,14 @@ def main():
             v = get_v2(sigmaP, nd1, sigmaV)
             dd = (v - commons.D) / (v * sigmaV)
             print "DD is %.10f" % dd
-            outputfile.write("DD is %.10f" % dd)
+            outputfile.write("DD is %.10f\n" % dd)
             edf = commons.get_nd1(-dd, "x-nx")
             print "EDF is %.10f\n" % edf
-            outputfile.write("EDF is %.10f\n" % edf)
+            outputfile.write("EDF is %.10f\n\n" % edf)
         inputfile.close()
+        outputfile.write("---------------------------\n")
+        outputfile.write("KMV4 end: " + time.strftime('%Y-%m-%d %H:%M:%S'))
+        outputfile.write("\n\n")
     outputfile.close()
 
 if __name__=="__main__":
