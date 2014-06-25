@@ -63,7 +63,9 @@ def find_word(filename, word):
                         return float(l.split()[1])
 
 def get_d2(nd2, filename):
-    if 0 < nd2 < 0.5 :
+    # change the range of nd2 to avoid the value of 1-nd2 out of the range
+    # in the nx-x file
+    if 0.000005 < nd2 < 0.5 :
         return -find_word(filename,  '%.5f' % (1-nd2))
     elif nd2 == 0.5 :
         return 0
