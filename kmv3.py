@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import commons
-import math, time
+import math, time, linecache
 
 def get_fund1(sigmaP, sigmaVi, nd1, d1):
     temp = math.log((sigmaP * commons.EQUITY) / (nd1 * sigmaVi * commons.D))
@@ -20,7 +20,7 @@ def get_v(sigmaP, nd1, sigmaV):
 def main():
     input_file = commons.get_input_file()
     data_file = "data/stock-price.data"
-    out_file = "data/out.data"
+    out_file = "out.data"
     outputfile = open(out_file, "w")
     outputfile.write("KMV3 begin: " + time.strftime('%Y-%m-%d %H:%M:%S') + "\n")
     outputfile.write("+++++++++++++++++++++++++++\n")
@@ -46,16 +46,18 @@ def main():
             # print sigmaV0
             sigmaV = nd1 = 0.0
             fund1 = 99999
+            nxxcache = linecache.getlines("nx-x")
+            xnxcache = linecache.getlines("x-nx")
             while True :
                 sigmaVi += 0.0001
                 if sigmaVi > sigmaP :
                     break
                 nd2i = commons.get_nd2(sigmaP, sigmaVi)
-                d2i = commons.get_d2(nd2i, "nx-x")
+                d2i = commons.get_d2(nd2i, nxxcache)
                 if d2i == 9999 :
                     continue
                 d1i = sigmaVi * commons.T + d2i
-                nd1i = commons.get_nd1(d1i, "x-nx")
+                nd1i = commons.get_nd1(d1i, xnxcache)
                 fund1i = get_fund1(sigmaP, sigmaVi, nd1i, d1i)
                 if fund1 > fund1i :
                     fund1 = fund1i
@@ -68,7 +70,7 @@ def main():
             dd = (v - commons.D) / (v * sigmaV)
             print "DD is %.10f" % dd
             outputfile.write("DD is %.10f\n" % dd)
-            edf = commons.get_nd1(-dd, "x-nx")
+            edf = commons.get_nd1(-dd, xnxcache)
             print "EDF is %.10f\n" % edf
             outputfile.write("EDF is %.10f\n\n" % edf)
         inputfile.close()

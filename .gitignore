@@ -52,3 +52,7 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 data/*
+*.data
+kmv33.py
+kmv35.py
+

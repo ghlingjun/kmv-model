@@ -56,11 +56,22 @@ def get_nd2(sigmaP, sigmaV0):
     return numerator / denominator
 
 def find_word(filename, word):
+    rownum = 0
+    if len(word) == 7 :
+        rownum = float(word) * 100000 - 50000
+    else :
+        rownum = float(word) * 10000
+    # line = linecache.getline(filename, int(rownum))
+    line = filename[int(rownum)]
+    # print word + ': ' + line
+    return float(line.split()[1])
+    '''
     with open(filename, 'r') as f:
         for l in f.readlines():
               if word in l:
                     if word == l.split()[0] :
                         return float(l.split()[1])
+    '''
 
 def get_d2(nd2, filename):
     # change the range of nd2 to avoid the value of 1-nd2 out of the range
